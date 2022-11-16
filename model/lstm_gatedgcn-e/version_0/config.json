@@ -1,0 +1,31 @@
+{
+ "norm_size": 96,
+ "vocab_dir": "/work/model/vocab",
+ "embedding_dims": 128,
+ "use_edge_attr": true,
+ "seq_model": "lstm",
+ "lstm_hidden_dims": 128,
+ "lstm_layers": 2,
+ "gnn_model": "gatedgcn-e",
+ "gnn_hidden_dims": 128,
+ "gnn_layers": 3,
+ "gnn_out_dims": 128,
+ "batch_norm": false,
+ "train_batch_size": 84,
+ "batch_k": 4,
+ "val_batch_size": 84,
+ "train_num_each_epoch": 400000,
+ "num_epochs": 80,
+ "num_workers": 8,
+ "learning_rate": 0.001,
+ "milestones": [
+  40,
+  60
+ ],
+ "miner_type": "multisimi",
+ "miner_norm_s": 6.0,
+ "loss_type": "multisimi",
+ "early_stopping": 20,
+ "precision": 16,
+ "save_name": "lstm_gatedgcn-e"
+}

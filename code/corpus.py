@@ -124,65 +124,6 @@ class InsNormalizer(object):
         operands = re.sub(stack_pointer, 'reg_stack_pointer', operands)
         return operands
     
-    
-def normalize_instruction(instruction, arch):
-    ins_id = instruction[0]
-    ins = instruction[2].split('\t')
-    
-    if len(ins) == 1: return ins_id, ins[0], []
-    elif len(ins) > 2: raise Exception('invalid instruction')
-
-    opcode, operands = ins[0], ins[1]
-    operands = operands.strip()
-    operands = operands.replace('ptr ','')
-    operands = operands.replace('offset ','')
-    operands = operands.replace('xmmword ','')
-    operands = operands.replace('dword ','')
-    operands = operands.replace('qword ','')
-    operands = operands.replace('word ','')
-    operands = operands.replace('byte ','')
-    operands = operands.replace('short ','')
-    operands = operands.replace(' - ','+')
-    operands = operands.replace(' + ', '+')
-    operands = operands.replace('!', '')
-    
-    # arm
-    if arch.startswith('arm'):
-        operands = re.sub(r'#0x[0-9a-f]+', 'CONST', operands)
-        operands = re.sub(r'#-0x[0-9a-f]+', 'CONST', operands)
-        operands = re.sub(r'#[0-9]+', 'CONST', operands)
-        operands = re.sub(r'#-[0-9]+', 'CONST', operands)
-    
-    # mips
-    if arch.startswith('mips'):
-        operands = re.sub(r'-0x[0-9a-f]+', 'CONST', operands)
-        operands = re.sub(r'0x[0-9a-f]+', 'CONST', operands)
-        operands = re.sub(r' [0-9]', ' CONST', operands)
-        operands = re.sub(r' -[0-9]', ' CONST', operands)
-        
-    # x86
-    if arch.startswith('x86'):
-        operands = re.sub(r'0x[0-9a-f]+', 'CONST', operands)
-        operands = re.sub(r'\+[0-9]', '+CONST', operands)
-        operands = re.sub(r' [0-9]', ' CONST', operands)
-        operands = re.sub(r' -[0-9]', ' CONST', operands)
-        operands = re.sub(r'^[0-9]', 'CONST', operands)
-        
-    if arch.startswith('arm'):
-        i = 0
-        operands = list(operands)
-        while i < len(operands) - 1:
-            if operands[i]+operands[i+1] == ', ' and \
-            '[' in operands[:i] and ']' in operands[i+2:]:
-                operands.pop(i+1)
-            i += 1
-        operands = ''.join(operands)    
-        operands = operands.split(', ')     
-    else:
-        operands = operands.split(', ')
-
-    return ins_id, opcode, operands
-    
 
 if __name__ == '__main__':
     vocab_dir = os.path.join(model_dir, 'vocab')

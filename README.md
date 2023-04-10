@@ -1,6 +1,7 @@
-# BCSD with MS loss
+# Binary Code Similarity Detection with Multi-Similarity Loss
 
 This is the source code of our solutions in CCF BDCI 2022 competition held on [DataFountain](https://datafountain.cn/competitions/593).
+We introduce advanced miner and loss algorithms from Deep Metric Learning into Binary Code Similarity Detection.
 
 ![](images/overview.png)
 
